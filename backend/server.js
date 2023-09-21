@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-require("dotenv").config({ path: "./.env" });
+require("dotenv").config();
 const port = process.env.PORT || 5000;
 const mongoUrl = process.env.MONGOURL
 
@@ -35,7 +35,7 @@ app.use(express.json());
 app.use(cors({
   credentials: true,
   exposedHeaders: ["set-cookie"],
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
+  origin: ['http://localhost:3000'],
   preflightContinue: false,
   optionsSuccessStatus: 204
 }))
@@ -47,6 +47,8 @@ app.use(cookieParser());
 app.get("/", (res, req) => {
   res.send("yay home page")
 })
+
+app.use('/api/auth', require('./routes/auth')); // Register route
 
 // const routes = require('./routes/allRoutes');
 //   app.use('/api', routes)
