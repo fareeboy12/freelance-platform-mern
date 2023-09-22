@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -21,6 +21,8 @@ const containerStyle = {
 };
 
 function Register() {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
     firstName: '',
     lastName: '',
@@ -92,12 +94,13 @@ function Register() {
 
         const response = await axios.post('/api/auth/register', userDataToSend);
   
-        if (response.status === 201) {
+        if (response.status === 200) {
           const data = response.data;
           // Save the JWT token to local storage or state for authentication
           localStorage.setItem('token', data.token);
           // Redirect the user to a protected route or perform other actions
           // e.g., history.push('/dashboard');
+          navigate("/login");
         } else {
           console.error('Registration failed:', response.data.message);
           // Handle registration errors, e.g., show error messages to the user

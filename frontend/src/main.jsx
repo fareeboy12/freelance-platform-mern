@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
+import { UserProvider } from './context/authContext';
 
 // Set the default base URL for Axios
 const baseURL = 'http://localhost:5000';
@@ -16,6 +17,8 @@ const root = createRoot(container);
 
 root.render(
   <BrowserRouter>
-    <App tab="home" />
+    <UserProvider>
+      <App tab="home" />
+    </UserProvider>
   </BrowserRouter>
 );

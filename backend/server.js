@@ -48,7 +48,8 @@ app.get("/", (res, req) => {
   res.send("yay home page")
 })
 
-app.use('/api/auth', require('./routes/auth')); // Register route
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/employer', require('./routes/jobs'));
 
 // const routes = require('./routes/allRoutes');
 //   app.use('/api', routes)
