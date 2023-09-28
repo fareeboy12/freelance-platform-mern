@@ -9,14 +9,14 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const FreelancerDashboard = () => {
 
-  const [jobs, setJobs] = useState([]); // State to store the list of jobs
+  const [jobs, setJobs] = useState([]);
 
-  // Function to fetch jobs when the component mounts
+  
   useEffect(() => {
-    // Make an HTTP GET request to fetch jobs from your server
-    axios.get('/api/employer/jobs') // Adjust the URL to match your API endpoint
+    
+    axios.get('/api/employer/jobs')
       .then((response) => {
-        setJobs(response.data); // Update the state with the fetched jobs
+        setJobs(response.data);
       })
       .catch((error) => {
         console.error('Error fetching jobs:', error);
@@ -26,8 +26,8 @@ const FreelancerDashboard = () => {
   return (
     <MuiContainer maxWidth="xl" sx={{ mt: 8, pb: 8 }}>
       {jobs.map((job) => (
-        <Box boxShadow={3}>
-          <Card key={job._id} variant="outlined" sx={{ mt: 1 }}>
+        <Box boxShadow={3} key={job._id}>
+          <Card variant="outlined" sx={{ mt: 1 }}>
             <CardContent>
               <Link href="/job-details" color="inherit" underline="none">
                 <Typography variant="h6" gutterBottom>

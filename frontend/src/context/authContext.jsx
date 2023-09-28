@@ -27,8 +27,21 @@ export function UserProvider({ children }) {
     localStorage.setItem('userData', JSON.stringify(data));
   };
 
+  const logout = () => {
+    setUserData({
+      userId: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      accountType: '',
+    });
+  
+    // Clear user data from local storage
+    localStorage.removeItem('userData');
+  };
+
   return (
-    <authContext.Provider value={{ userData, setUser }}>
+    <authContext.Provider value={{ userData, setUser, logout }}>
       {children}
     </authContext.Provider>
   );

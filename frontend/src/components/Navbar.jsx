@@ -44,7 +44,7 @@ function Navbar() {
           <Typography
             variant="h6"
             noWrap
-            component={Link} // Use Link for your logo link
+            component={Link}
             to="/"
             sx={{
               mr: 2,
@@ -88,14 +88,13 @@ function Navbar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {/* Remove pages */}
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
-            component={Link} // Use Link for your logo link
+            component={Link}
             to="/"
             sx={{
               mr: 2,
@@ -110,14 +109,10 @@ function Navbar() {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {/* Remove pages */}
-          </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
                 <PersonIcon />
               </IconButton>
             </Tooltip>
@@ -144,14 +139,6 @@ function Navbar() {
               ))}
             </Menu>
           </Box>
-          {/* <Box sx={{ flexGrow: 0 }}>
-            <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
-              <Button>Login</Button>
-            </Link>
-            <Link to="/register" style={{ color: 'inherit', textDecoration: 'none' }}>
-              <Button>Register</Button>
-            </Link>
-          </Box> */}
         </Toolbar>
       </Container>
     </AppBar>

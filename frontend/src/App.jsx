@@ -11,6 +11,8 @@ import FreelancerNavbar from './components/freelancer/FreelancerNavbar';
 import { useUser } from './context/authContext';
 import PostAJob from './components/employer/PostAJob';
 
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+
 function App() {
   const { userData } = useUser();
 
@@ -33,7 +35,6 @@ function App() {
         <Route exact path="/employer/dashboard" element={<EmployerDashboard />} />
         <Route exact path="/freelancer/dashboard" element={<FreelancerDashboard />} />
         <Route exact path="/post-a-job" element={<PostAJob />} />
-        {/* Add more routes as needed */}
       </Routes>
     </>
   )

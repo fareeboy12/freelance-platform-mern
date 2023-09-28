@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,15 +12,17 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { Link } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const settings = ['Dashboard', 'Profile', 'Settings', 'Logout'];
+import { useUser } from '../../context/authContext';
+
+const settings = ['Dashboard', 'Profile', 'Settings'];
 
 const jobsMenuItems = [
   'Post a Job',
@@ -57,9 +60,11 @@ const dummyNotifications = [
 ];
 
 function EmployerNavbar() {
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [anchorElHelp, setAnchorElHelp] = React.useState(null);
-  const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
+  const navigate = useNavigate();
+  const { logout } = useUser();
+  const [anchorElUser, setAnchorElUser] = useState();
+  const [anchorElHelp, setAnchorElHelp] = useState();
+  const [anchorElNotifications, setAnchorElNotifications] = useState();
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
 
   const handleOpenUserMenu = (event) => {
@@ -90,9 +95,9 @@ function EmployerNavbar() {
     setAnchorElNotifications(null);
   };
 
-  const [anchorElJobs, setAnchorElJobs] = React.useState(null);
-  const [anchorElTalent, setAnchorElTalent] = React.useState(null);
-  const [anchorElReports, setAnchorElReports] = React.useState(null);
+  const [anchorElJobs, setAnchorElJobs] = useState();
+  const [anchorElTalent, setAnchorElTalent] = useState();
+  const [anchorElReports, setAnchorElReports] = useState();
 
   const handleOpenJobsMenu = (event) => {
     setAnchorElJobs(event.currentTarget);
@@ -116,6 +121,14 @@ function EmployerNavbar() {
 
   const handleCloseReportsMenu = () => {
     setAnchorElReports(null);
+  };
+
+  const handleLogout = () => {
+    // Trigger the logout process
+    logout();
+  
+    // Redirect the user to the login page
+    return navigate("/login");
   };
 
   return (
@@ -364,6 +377,7 @@ function EmployerNavbar() {
               color="inherit"
             >
               <PersonIcon />
+              <ArrowDropDownIcon />
             </IconButton>
           </Tooltip>
           <Menu
@@ -388,6 +402,9 @@ function EmployerNavbar() {
                 </Link>
               </MenuItem>
             ))}
+            <MenuItem onClick={handleLogout} style={{ cursor: 'pointer' }}>
+              Logout
+            </MenuItem>
           </Menu>
         </Toolbar>
       </Container>

@@ -16,7 +16,7 @@ router.post(
       min: 8,
     }),
   ],
-  authController.registerUser // Use the controller function as the route handler
+  authController.registerUser
 );
 
 router.post(
@@ -25,7 +25,7 @@ router.post(
       check('email', 'Please include a valid email').isEmail(),
       check('password', 'Password is required').exists(),
     ],
-    authController.loginUser // Use the controller function for login
+    authController.loginUser
   );
 
 module.exports = router;

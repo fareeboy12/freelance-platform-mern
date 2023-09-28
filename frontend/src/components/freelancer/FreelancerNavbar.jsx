@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,6 +16,10 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import PersonIcon from '@mui/icons-material/Person';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Link from '@mui/material/Link';
+
+import { useUser } from '../../context/authContext';
+
+const settings = ['Dashboard', 'Profile', 'Settings'];
 
 const findWorkMenuItems = [
   'Find Work',
@@ -56,6 +61,8 @@ const dummyNotifications = [
 ];
 
 function FreelancerNavbar() {
+  const navigate = useNavigate();
+  const { logout } = useUser();
   const [anchorElFindWork, setAnchorElFindWork] = React.useState(null);
   const [anchorElMyJobs, setAnchorElMyJobs] = React.useState(null);
   const [anchorElReports, setAnchorElReports] = React.useState(null);
@@ -88,6 +95,10 @@ function FreelancerNavbar() {
     setAnchorElUser(event.currentTarget);
   };
 
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   const handleCloseMenu = (menuType) => {
     switch (menuType) {
       case 'findWork':
@@ -115,6 +126,14 @@ function FreelancerNavbar() {
 
   const handleSearchToggle = () => {
     setIsSearchOpen(!isSearchOpen);
+  };
+
+  const handleLogout = () => {
+    // Trigger the logout process
+    logout();
+  
+    // Redirect the user to the login page
+    return navigate("/login");
   };
 
   return (
@@ -366,22 +385,17 @@ function FreelancerNavbar() {
               horizontal: 'right',
             }}
             open={Boolean(anchorElUser)}
-            onClose={() => handleCloseMenu('user')}
+            onClose={handleCloseUserMenu}
           >
-            <MenuItem>
-              <Link to="/profile" style={{ color: 'inherit', textDecoration: 'none' }}>
-                Profile
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/settings" style={{ color: 'inherit', textDecoration: 'none' }}>
-                Settings
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/logout" style={{ color: 'inherit', textDecoration: 'none' }}>
-                Logout
-              </Link>
+            {settings.map((setting) => (
+              <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <Link to={`/${setting.toLowerCase()}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  {setting}
+                </Link>
+              </MenuItem>
+            ))}
+            <MenuItem onClick={handleLogout} style={{ cursor: 'pointer'}}>
+              Logout
             </MenuItem>
           </Menu>
         </Toolbar>

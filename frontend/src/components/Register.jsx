@@ -96,21 +96,15 @@ function Register() {
   
         if (response.status === 200) {
           const data = response.data;
-          // Save the JWT token to local storage or state for authentication
           localStorage.setItem('token', data.token);
-          // Redirect the user to a protected route or perform other actions
-          // e.g., history.push('/dashboard');
           navigate("/login");
         } else {
           console.error('Registration failed:', response.data.message);
-          // Handle registration errors, e.g., show error messages to the user
         }
       } catch (error) {
-        console.error('Error during registration:', error);
         // Handle network or other errors
+        console.error('Error during registration:', error);
       }
-
-    // Continue with your signup logic for valid data
   };
 
   return (

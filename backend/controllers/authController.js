@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Controller function for user registration
 const registerUser = async (req, res) => {
   // Check for validation errors
   const errors = validationResult(req);
@@ -47,8 +46,8 @@ const registerUser = async (req, res) => {
 
     jwt.sign(
       payload,
-      process.env.JWT_SECRET, // Your secret key
-      { expiresIn: 3600 }, // Token expiration (optional)
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' },
       (err, token) => {
         if (err) throw err;
         res.json({ token });
@@ -94,8 +93,8 @@ const loginUser = async (req, res) => {
   
       jwt.sign(
         payload,
-        process.env.JWT_SECRET, // Your secret key
-        { expiresIn: '24h' }, // Token expiration (optional)
+        process.env.JWT_SECRET,
+        { expiresIn: '24h' },
         (err, token) => {
           if (err) throw err;
           // Return the user data and token

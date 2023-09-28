@@ -50,7 +50,6 @@ function Login() {
   
       if (response.status === 200) {
         const userData = response.data.user;
-        console.log(userData)
         localStorage.setItem('userData', JSON.stringify(userData));
         setUser(userData);
         const accountType = userData.accountType;
@@ -63,8 +62,6 @@ function Login() {
         }
 
         navigate(redirectUrl);
-        // Login successful
-        // You can handle success, e.g., redirect to a dashboard page or store the token in local storage.
       } else {
         console.log(response)
       }
