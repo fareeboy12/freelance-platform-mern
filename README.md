@@ -6,7 +6,7 @@ This is a R&D project of Freelance Platform using MERN Stack.
 
 ## Authors
 
-- [@farhan ali](https://www.github.com/fareeboy12)
+- [@farhan ali](https://www.github.com/farhanali-developer)
 
 
 ## Badges
