@@ -136,7 +136,7 @@ const SingleJob = () => {
                     <Typography variant='body2' sx={{ mt:2 }}><strong>$22.04 /hr avg hourly rate paid</strong></Typography>
                     <Typography variant='body2'>374 hours</Typography>
 
-                    <Typography variant='body2' sx={{ mt: 4 }}><mute>Member since Feb 21, 2021</mute></Typography>
+                    <Typography variant='body2' sx={{ mt: 4 }}>Member since Feb 21, 2021</Typography>
                 </Box>
             </Box>
         </Box>

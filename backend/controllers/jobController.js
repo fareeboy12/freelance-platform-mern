@@ -1,4 +1,5 @@
 const Job = require('../models/Jobs');
+const Proposal = require('../models/Proposal');
 
 // Create a new job
 const createJob = async (req, res) => {
@@ -74,8 +75,29 @@ const getSingleJob = async (req, res) => {
   }
 }
 
+const getSpecificJobs = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    // Fetch jobs by user ID from the database
+    const jobs = await Job.find({ userId: userId });
+    
+    // Fetch proposals for each job and count them
+    const jobsWithProposalsCount = await Promise.all(jobs.map(async (job) => {
+      const proposalsCount = await Proposal.countDocuments({ employerId: userId, jobId: job._id });
+      return { ...job.toObject(), proposalsCount };
+    }));
+
+    res.json(jobsWithProposalsCount);
+  } catch (error) {
+    console.error('Error fetching jobs:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
 module.exports = {
   createJob,
   getJob,
-  getSingleJob
+  getSingleJob,
+  getSpecificJobs
 };

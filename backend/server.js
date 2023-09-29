@@ -50,6 +50,8 @@ app.get("/", (res, req) => {
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/employer', require('./routes/jobs'));
+// app.use('/api/proposals', require('./routes/employer'));
+app.use('/api/proposals', require('./routes/proposals'));
 app.use('/api/freelancer', require('./routes/freelancer'));
 
 

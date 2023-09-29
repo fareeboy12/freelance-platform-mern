@@ -128,6 +128,8 @@ function FreelancerNavbar() {
           <Typography
             variant="h6"
             noWrap
+            to="/freelancer/dashboard"
+            component={Link}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
