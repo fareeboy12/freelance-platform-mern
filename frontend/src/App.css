@@ -9,7 +9,8 @@
 }
 
 body{
-  background-color: rgba(237,242,247,1);
+  /* background-color: rgba(237,242,247,1); */
+  background-color: #fff;
 }
 
 /* Remove default margin */

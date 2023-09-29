@@ -38,6 +38,7 @@ export function UserProvider({ children }) {
   
     // Clear user data from local storage
     localStorage.removeItem('userData');
+    localStorage.removeItem('token');
   };
 
   return (

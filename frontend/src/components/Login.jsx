@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+import { TextField, Button, Container, Typography, InputAdornment, Box, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useUser } from '../context/authContext';
 
@@ -50,7 +45,10 @@ function Login() {
   
       if (response.status === 200) {
         const userData = response.data.user;
+        const userToken = response.data.token;
         localStorage.setItem('userData', JSON.stringify(userData));
+        localStorage.setItem('token', userToken)
+
         setUser(userData);
         const accountType = userData.accountType;
 
@@ -117,6 +115,9 @@ function Login() {
         >
           Login
         </Button>
+        <Box sx={{ color: 'black', mt: 5, textAlign: 'center' }}>
+            Don't Have an account? <Link to="/register">Register Now!</Link>
+        </Box>
       </form>
     </Container>
   );

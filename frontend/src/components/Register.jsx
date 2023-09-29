@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+import { TextField, Button, Container, Typography, IconButton, InputAdornment, MenuItem, Box } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import MenuItem from '@mui/material/MenuItem';
 import PasswordStrengthBar from 'react-password-strength-bar';
 
 const containerStyle = {
@@ -227,9 +221,9 @@ function Register() {
         >
           Signup
         </Button>
-        <div style={{ color: 'black' }}>
+        <Box sx={{ color: 'black', mt: 5, textAlign: 'center' }}>
             Already Have an account? <Link to="/login">Login</Link>
-        </div>
+        </Box>
       </form>
     </Container>
   );

@@ -1,22 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import SearchIcon from '@mui/icons-material/Search';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import PersonIcon from '@mui/icons-material/Person';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import Link from '@mui/material/Link';
-
+import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Tooltip, MenuItem, Link } from '@mui/material';
+import { Person, Search, HelpOutline, Notifications, ArrowDropDown } from '@mui/icons-material';
 import { useUser } from '../../context/authContext';
 
 const settings = ['Dashboard', 'Profile', 'Settings'];
@@ -273,7 +258,7 @@ function FreelancerNavbar() {
                 color="inherit"
                 style={{ marginLeft: '8px' }}
               >
-                <SearchIcon />
+                <Search />
               </IconButton>
             </div>
           ) : (
@@ -283,7 +268,7 @@ function FreelancerNavbar() {
               onClick={handleSearchToggle}
               color="inherit"
             >
-              <SearchIcon />
+              <Search />
             </IconButton>
           )}
 
@@ -296,7 +281,7 @@ function FreelancerNavbar() {
             onClick={handleOpenHelpMenu}
             color="inherit"
           >
-            <HelpOutlineIcon />
+            <HelpOutline />
           </IconButton>
           <Menu
             id="help-appbar"
@@ -331,7 +316,7 @@ function FreelancerNavbar() {
             onClick={handleOpenNotificationsMenu}
             color="inherit"
           >
-            <NotificationsIcon />
+            <Notifications />
           </IconButton>
           <Menu
             id="notifications-appbar"
@@ -368,8 +353,8 @@ function FreelancerNavbar() {
               onClick={handleOpenUserMenu}
               color="inherit"
             >
-              <PersonIcon />
-              <ArrowDropDownIcon />
+              <Person />
+              <ArrowDropDown />
             </IconButton>
           </Tooltip>
           <Menu

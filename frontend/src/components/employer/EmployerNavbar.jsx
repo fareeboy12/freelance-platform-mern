@@ -1,25 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import PersonIcon from '@mui/icons-material/Person';
-import SearchIcon from '@mui/icons-material/Search';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
+import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Tooltip, MenuItem } from '@mui/material';
+import { Adb, Person, Search, HelpOutline, Notifications, Favorite, ArrowDropDown } from '@mui/icons-material';
 import { useUser } from '../../context/authContext';
 
 const settings = ['Dashboard', 'Profile', 'Settings'];
@@ -135,7 +117,7 @@ function EmployerNavbar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <Adb sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -271,7 +253,7 @@ function EmployerNavbar() {
                 color="inherit"
                 style={{ marginLeft: '8px' }}
               >
-                <SearchIcon />
+                <Search />
               </IconButton>
             </div>
           ) : (
@@ -281,7 +263,7 @@ function EmployerNavbar() {
               onClick={handleSearchToggle}
               color="inherit"
             >
-              <SearchIcon />
+              <Search />
             </IconButton>
           )}
 
@@ -294,7 +276,7 @@ function EmployerNavbar() {
             onClick={handleOpenHelpMenu}
             color="inherit"
           >
-            <HelpOutlineIcon />
+            <HelpOutline />
           </IconButton>
           <Menu
             id="help-appbar"
@@ -331,7 +313,7 @@ function EmployerNavbar() {
             onClick={handleOpenNotificationsMenu}
             color="inherit"
           >
-            <NotificationsIcon />
+            <Notifications />
           </IconButton>
           <Menu
             id="notifications-appbar"
@@ -363,7 +345,7 @@ function EmployerNavbar() {
 
           {/* Favorites (Heart) */}
           <Link to="/all-saves" style={{ color: 'inherit', textDecoration: 'none' }}>
-            <FavoriteIcon />
+            <Favorite />
           </Link>
 
           {/* User Profile */}
@@ -376,8 +358,8 @@ function EmployerNavbar() {
               onClick={handleOpenUserMenu}
               color="inherit"
             >
-              <PersonIcon />
-              <ArrowDropDownIcon />
+              <Person />
+              <ArrowDropDown />
             </IconButton>
           </Tooltip>
           <Menu

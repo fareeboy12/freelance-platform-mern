@@ -45,6 +45,7 @@ const getJob = async (req, res) => {
   try {
     // Fetch all jobs from the database
     const jobs = await Job.find().sort({ createdAt: -1 });
+    // const jobs = await Job.deleteMany();
 
     res.status(200).json(jobs);
   } catch (error) {
@@ -53,7 +54,28 @@ const getJob = async (req, res) => {
   }
 };
 
+const getSingleJob = async (req, res) => {
+  try {
+    const jobId = req.params.id; // Extract the job ID from the request parameters
+
+    // Find the job by ID in the database
+    const job = await Job.findById(jobId);
+
+    if (!job) {
+      // If the job with the given ID is not found, return a 404 Not Found status
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    // If the job is found, return its data
+    res.status(200).json(job);
+  } catch (error) {
+    console.error('Error fetching job:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+}
+
 module.exports = {
   createJob,
-  getJob
+  getJob,
+  getSingleJob
 };
