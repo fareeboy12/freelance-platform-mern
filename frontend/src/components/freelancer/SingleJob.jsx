@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Container, Typography, Link, Button, Rating } from '@mui/material';
 import axios from 'axios';
 import moment from 'moment';
@@ -8,6 +8,8 @@ import { FavoriteBorder, Verified } from '@mui/icons-material';
 const SingleJob = () => {
 
     const { id } = useParams();
+    const navigate = useNavigate();
+
     const [jobData, setJobData] = useState(null);
 
     useEffect(() => {
@@ -25,6 +27,11 @@ const SingleJob = () => {
     if (!jobData) {
         return <p>Loading...</p>;
     }
+
+    const handleApplyNowClick = () => {
+        // Redirect user to ApplyToJob component with the job ID in the URL
+        navigate(`/proposals/job/${jobData?._id}/apply`);
+    };
 
     const displayJobCreationTime = (createdAt) => {
         const now = moment();
@@ -107,7 +114,7 @@ const SingleJob = () => {
                 </Box>
             </Box>
             <Box sx={{ width: '22%', p: 2, borderLeft: '1px solid #e4ebe4' }}>
-                <Button variant="contained" sx={{ borderRadius: '10rem' }}>Apply Now</Button>
+                <Button variant="contained" sx={{ borderRadius: '10rem' }} onClick={handleApplyNowClick}>Apply Now</Button>
                 <Button variant="outlined" sx={{ mt: 2, borderRadius: '10rem' }}><FavoriteBorder /> Save Job</Button>
                 <Box sx={{ mt:2 }}>
                     <Typography variant='body2'>Send a proposal for: 16 Connects</Typography>

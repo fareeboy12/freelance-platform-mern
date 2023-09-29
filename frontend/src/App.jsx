@@ -12,6 +12,7 @@ import PostAJob from './components/employer/PostAJob';
 import ProtectedRoutes from './components/ProtectedRoute/ProtectedRoutes';
 import { useUser } from './context/authContext';
 import SingleJob from './components/freelancer/SingleJob';
+import ApplyToJob from './components/freelancer/ApplyToJob';
 
 function App() {
   const { userData } = useUser();
@@ -46,6 +47,7 @@ function App() {
         </Route>
 
         <Route exact path="/job/:id" element={<SingleJob />} />
+        <Route exact path="/proposals/job/:id/apply" element={<ApplyToJob />} />
       </Routes>
     </>
   )
