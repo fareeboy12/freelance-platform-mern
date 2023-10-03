@@ -34,13 +34,13 @@ const EmployerDashboard = () => {
   };
 
   return (
-    <Container sx={{ my: 8 }}>
+    <Container sx={{ mt: 8, pb: 8 }}>
       <Box>
         <Typography variant='h2' sx={{ fontSize: '22px' }}>Your Dashboard</Typography>
       </Box>
-      <Box sx={{ mt: 2, border: '1px solid #e4ebe4', borderRadius: '15px', mt: 8 }}>
+      <Box sx={{ border: '1px solid #e4ebe4', borderRadius: '15px', mt: 8 }}>
           <Box sx={{ p: 4 }}>
-            <Typography variant='body2'>Your Postings</Typography>
+            <Typography variant='h2' sx={{ fontSize: '22px' }}>Your Postings</Typography>
             {jobData.map((job) => (
               <Box key={job._id} sx={{ mt: 3 }}>
                 <Link href="#" onClick={() => handleJobClick(job._id)}>{job?.jobTitle}</Link>

@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const FreelancerDetail = require('../models/FreelancerDetail');
 
 const registerUser = async (req, res) => {
   // Check for validation errors
@@ -95,10 +96,10 @@ const loginUser = async (req, res) => {
         payload,
         process.env.JWT_SECRET,
         { expiresIn: '24h' },
-        (err, token) => {
+        async (err, token) => {
           if (err) throw err;
           // Return the user data and token
-          res.json({
+          let responseData = {
             token,
             user: {
               userId: user._id,
@@ -107,14 +108,26 @@ const loginUser = async (req, res) => {
               email: user.email,
               accountType: user.accountType,
             },
-          });
+          };
+    
+          // Check if the user is a Freelancer
+          if (user.accountType === 'Freelancer') {
+            // Fetch Freelancer details for the logged-in user
+            const freelancerDetail = await FreelancerDetail.findOne({ userId: user._id });
+            if (freelancerDetail) {
+              // Include Freelancer details in the response
+              responseData.freelancerDetail = freelancerDetail;
+            }
+          }
+    
+          res.json(responseData);
         }
       );
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
     }
-  };
+};
   
   module.exports = {
     registerUser,

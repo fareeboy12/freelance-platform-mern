@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Button, Container, TextField, Typography } from '@mui/material'
 
 const ApplyToJob = () => {
@@ -9,6 +9,11 @@ const ApplyToJob = () => {
     const userId = userData ? userData.userId : null;
     const [hourlyRate, setHourlyRate] = useState('');
     const [coverLetter, setCoverLetter] = useState('');
+    const [estimatedAmount, setEstimatedAmount] = useState(0);
+    const navigate = useNavigate();
+
+    const taxFee = hourlyRate * 0.2; // Calculate 20% of the hourly rate
+    const formattedTaxFee = taxFee.toFixed(2);
 
     const handleSubmit = async () => {
         // Validate data before sending the request
@@ -30,6 +35,7 @@ const ApplyToJob = () => {
           .then(response => {
             // Handle successful response, e.g., show a success message to the user
             console.log('Application submitted successfully:', response.data);
+            navigate('/freelancer/dashboard');
           })
           .catch(error => {
             // Handle error, e.g., display an error message to the user
@@ -58,13 +64,18 @@ const ApplyToJob = () => {
                         <Typography variant='body2'>Total amount the client will see on your proposal</Typography>
                     </Box>
                     <Box sx={{ width: '20%', mt: 4 }}>
-                        <TextField id="hourlyRate" type='number' label="Your Hourly Rate" variant="outlined" value={hourlyRate} onChange={(e) => setHourlyRate(e.target.value)} />
+                        <TextField id="hourlyRate" type='number' label="Your Hourly Rate" variant="outlined" value={hourlyRate} onChange={(e) => {
+        const rate = parseFloat(e.target.value);
+        setHourlyRate(rate);
+        const estimatedAmount = rate * 0.8; // Calculate 80% of hourly rate
+        setEstimatedAmount(estimatedAmount);
+    }} />
                     </Box>
                     <Box sx={{ width: '80%', mt: 4 }}>
-                        <Typography variant='body2'><strong>10% Freelancer Service Fee</strong></Typography>
+                        <Typography variant='body2'><strong>20% Freelancer Service Fee</strong></Typography>
                     </Box>
                     <Box sx={{ width: '20%', mt: 4 }}>
-                        <Typography variant='body2'>-$3.50/hr</Typography>
+                        <Typography variant='body2'>-${formattedTaxFee}/hr</Typography>
                     </Box>
 
                     <Box sx={{ width: '80%', mt: 4 }}>
@@ -72,7 +83,7 @@ const ApplyToJob = () => {
                         <Typography variant='body2'>The estimated amount you'll receive after service fees</Typography>
                     </Box>
                     <Box sx={{ width: '20%', mt: 4 }}>
-                        <TextField id="outlined-basic" type='number' label="You will recieve" variant="outlined" />
+                        <TextField id="outlined-basic" type='text' label="You will recieve" variant="outlined" value={`$${estimatedAmount}`} disabled />
                     </Box>
                 </Box>
 

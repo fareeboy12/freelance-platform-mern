@@ -13,11 +13,28 @@ export function UserProvider({ children }) {
     accountType: '',
   });
 
+  const [freelancerDetail, setFreelancerDetail] = useState({
+    id: '',
+    profileTitle: '',
+    hourlyRate: '',
+    skills: [],
+    country: '',
+    state: '',
+    city: '',
+    description: '',
+    userId: ''
+  });
+
   useEffect(() => {
     // Initialize userData from local storage if available
     const storedUserData = localStorage.getItem('userData');
+    const storedFreelancerDetail = localStorage.getItem('freelancerDetail');
     if (storedUserData) {
       setUserData(JSON.parse(storedUserData));
+    }
+
+    if (storedFreelancerDetail) {
+      setFreelancerDetail(JSON.parse(storedFreelancerDetail));
     }
   }, []);
 
@@ -25,6 +42,11 @@ export function UserProvider({ children }) {
   const setUser = (data) => {
     setUserData(data);
     localStorage.setItem('userData', JSON.stringify(data));
+  };
+
+  const setFreelancer = (data) => {
+    setFreelancerDetail(data);
+    localStorage.setItem('freelancerDetail', JSON.stringify(data));
   };
 
   const logout = () => {
@@ -35,14 +57,27 @@ export function UserProvider({ children }) {
       email: '',
       accountType: '',
     });
+
+    setFreelancerDetail({
+      id: '',
+      profileTitle: '',
+      hourlyRate: '',
+      skills: [],
+      country: '',
+      state: '',
+      city: '',
+      description: '',
+      userId: ''
+    });
   
     // Clear user data from local storage
     localStorage.removeItem('userData');
+    localStorage.removeItem('freelancerDetail');
     localStorage.removeItem('token');
   };
 
   return (
-    <authContext.Provider value={{ userData, setUser, logout }}>
+    <authContext.Provider value={{ userData, setUser, setFreelancer, freelancerDetail, logout }}>
       {children}
     </authContext.Provider>
   );

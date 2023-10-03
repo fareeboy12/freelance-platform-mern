@@ -43,31 +43,35 @@ function Login() {
         password,
       });
   
-      if (response.status === 200) {
-        const userData = response.data.user;
-        const userToken = response.data.token;
-        localStorage.setItem('userData', JSON.stringify(userData));
-        localStorage.setItem('token', userToken)
+      const userData = response?.data?.user;
+      const userToken = response?.data?.token;
+      const freelancerDetail = response?.data?.freelancerDetail;
 
-        setUser(userData);
-        const accountType = userData.accountType;
-
-        let redirectUrl = '';
-        if (accountType === 'Freelancer') {
-          redirectUrl = '/freelancer/dashboard';
-        } else if (accountType === 'Employer') {
-          redirectUrl = '/employer/dashboard';
-        }
-
-        navigate(redirectUrl);
-      } else {
-        console.log(response)
+      // console.log(response.data);
+  
+      localStorage.clear();
+      localStorage.setItem('userData', JSON.stringify(userData));
+      
+      localStorage.setItem('token', userToken);
+  
+      setUser(userData);
+      const accountType = userData.accountType;
+  
+      let redirectUrl = '';
+      if (accountType === 'Freelancer') {
+        localStorage.setItem('freelancerDetail', JSON.stringify(freelancerDetail));
+        redirectUrl = '/freelancer/dashboard';
+      } else if (accountType === 'Employer') {
+        redirectUrl = '/employer/dashboard';
       }
+  
+      navigate(redirectUrl);
     } catch (error) {
       // Handle network or other errors
       console.error('Error during login:', error);
     }
   };
+  
 
   return (
     <Container maxWidth="sm" style={containerStyle}>

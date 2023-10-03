@@ -1,40 +1,110 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Tooltip, MenuItem, Link } from '@mui/material';
+import { useNavigate, Link } from 'react-router-dom';
+import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Tooltip, MenuItem } from '@mui/material';
 import { Person, Search, HelpOutline, Notifications, ArrowDropDown } from '@mui/icons-material';
 import { useUser } from '../../context/authContext';
 
-const settings = ['Dashboard', 'Profile', 'Settings'];
+const settings = [
+  {
+    'title': 'Dashboard',
+    'url': '/freelancer/dashboard'
+  },
+  {
+    'title': 'Profile',
+    'url': '/freelancer/profile'
+  },
+  {
+    'title': 'Settings',
+    'url': '/freelancer/settings'
+  }
+];
 
 const findWorkMenuItems = [
-  'Find Work',
-  'Your Network',
-  'Saved Jobs',
-  'Proposals',
-  'Profile',
-  'My Stats',
-  'My Project Dashboard',
+  {
+    'title': 'Find Work',
+    'url': '/'
+  },
+  {
+    'title': 'Your Network',
+    'url': '/'
+  },
+  {
+    'title': 'Saved Jobs',
+    'url': '/'
+  },
+  {
+    'title': 'Proposals',
+    'url': '/'
+  },
+  {
+    'title': 'Profile',
+    'url': '/'
+  },
+  {
+    'title': 'My Stats',
+    'url': '/'
+  },
+  {
+    'title': 'My Project Dashboard',
+    'url': '/'
+  }
 ];
 
 const myJobsMenuItems = [
-  'My Jobs',
-  'All Contracts',
-  'Work Diary',
+  {
+    'title': 'My Jobs',
+    'url': '/'
+  },
+  {
+    'title': 'All Contracts',
+    'url': '/'
+  },
+  {
+    'title': 'Work Diary',
+    'url': '/'
+  }
 ];
 
 const reportsMenuItems = [
-  'Overview',
-  'My Reports',
-  'Billings & Earnings',
-  'Connects History',
-  'Transaction History',
-  'Certificate of Earnings',
+  {
+    'title': 'Overview',
+    'url': '/'
+  },
+  {
+    'title': 'My Reports',
+    'url': '/'
+  },
+  {
+    'title': 'Billings & Earnings',
+    'url': '/'
+  },
+  {
+    'title': 'Connects History',
+    'url': '/'
+  },
+  {
+    'title': 'Transaction History',
+    'url': '/'
+  },
+  {
+    'title': 'Certificate of Earnings',
+    'url': '/'
+  }
 ];
 
 const helpMenuItems = [
-  'Help and Support',
-  'Community and Forums',
-  'My Requests',
+  {
+    'title': 'Help and Support',
+    'url': '/'
+  },
+  {
+    'title': 'Community and Forums',
+    'url': '/'
+  },
+  {
+    'title': 'My Requests',
+    'url': '/'
+  }
 ];
 
 const dummyNotifications = [
@@ -166,13 +236,13 @@ function FreelancerNavbar() {
                 open={Boolean(anchorElFindWork)}
                 onClose={() => handleCloseMenu('findWork')}
               >
-                {findWorkMenuItems.map((item) => (
-                  <MenuItem key={item} onClick={() => handleCloseMenu('findWork')}>
+                {findWorkMenuItems.map((item, index) => (
+                  <MenuItem key={index} onClick={() => handleCloseMenu('findWork')}>
                     <Link
-                      to={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
+                      to={item?.url}
                       style={{ color: 'inherit', textDecoration: 'none' }}
                     >
-                      {item}
+                      {item?.title}
                     </Link>
                   </MenuItem>
                 ))}
@@ -199,13 +269,13 @@ function FreelancerNavbar() {
                 open={Boolean(anchorElMyJobs)}
                 onClose={() => handleCloseMenu('myJobs')}
               >
-                {myJobsMenuItems.map((item) => (
-                  <MenuItem key={item} onClick={() => handleCloseMenu('myJobs')}>
+                {myJobsMenuItems.map((item, index) => (
+                  <MenuItem key={index} onClick={() => handleCloseMenu('myJobs')}>
                     <Link
-                      to={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
+                      to={item?.url}
                       style={{ color: 'inherit', textDecoration: 'none' }}
                     >
-                      {item}
+                      {item?.title}
                     </Link>
                   </MenuItem>
                 ))}
@@ -232,13 +302,13 @@ function FreelancerNavbar() {
                 open={Boolean(anchorElReports)}
                 onClose={() => handleCloseMenu('reports')}
               >
-                {reportsMenuItems.map((item) => (
-                  <MenuItem key={item} onClick={() => handleCloseMenu('reports')}>
+                {reportsMenuItems.map((item, index) => (
+                  <MenuItem key={index} onClick={() => handleCloseMenu('reports')}>
                     <Link
-                      to={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
+                      to={item?.url}
                       style={{ color: 'inherit', textDecoration: 'none' }}
                     >
-                      {item}
+                      {item?.title}
                     </Link>
                   </MenuItem>
                 ))}
@@ -300,10 +370,10 @@ function FreelancerNavbar() {
             open={Boolean(anchorElHelp)}
             onClose={() => handleCloseMenu('help')}
           >
-            {helpMenuItems.map((item) => (
-              <MenuItem key={item} onClick={() => handleCloseMenu('help')}>
-                <Link to={`/${item.toLowerCase().replace(/\s+/g, '-')}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                  {item}
+            {helpMenuItems.map((item, index) => (
+              <MenuItem key={index} onClick={() => handleCloseMenu('help')}>
+                <Link to={item?.url} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  {item?.title}
                 </Link>
               </MenuItem>
             ))}
@@ -374,13 +444,15 @@ function FreelancerNavbar() {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Link to={`/${setting.toLowerCase()}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                  {setting}
-                </Link>
-              </MenuItem>
-            ))}
+            {settings.map((setting, index) => {
+              return (
+                <MenuItem key={index} onClick={handleCloseUserMenu}>
+                  <Link to={setting?.url} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    {setting?.title}
+                  </Link>
+                </MenuItem>
+              )
+            })}
             <MenuItem onClick={handleLogout} style={{ cursor: 'pointer'}}>
               Logout
             </MenuItem>

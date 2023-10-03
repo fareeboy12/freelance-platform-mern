@@ -32,13 +32,14 @@ mongoose.connect(mongoUrl, {
 
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(cors({
-  credentials: true,
-  exposedHeaders: ["set-cookie"],
-  origin: ['http://localhost:3000'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-}))
+// app.use(cors({
+//   credentials: true,
+//   exposedHeaders: ["set-cookie"],
+//   origin: ['http://localhost:3000'],
+//   preflightContinue: false,
+//   optionsSuccessStatus: 204
+// }))
+app.use(cors());
 
 
 app.use(cookieParser());

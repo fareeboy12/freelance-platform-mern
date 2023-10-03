@@ -16,7 +16,6 @@ const SingleJob = () => {
         // Fetch the job data using the ID from the URL
         axios.get(`/api/employer/job/${id}`)
           .then((response) => {
-            console.log(response.data)
             setJobData(response.data);
           })
           .catch((error) => {

@@ -61,7 +61,7 @@ const FreelancerDashboard = () => {
         <Box sx={{ width: '18%' }}></Box>
       </Box>
     </MuiContainer>
-  );''
+  );
 }
 
 export default FreelancerDashboard;

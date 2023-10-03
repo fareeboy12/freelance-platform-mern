@@ -14,6 +14,7 @@ import { useUser } from './context/authContext';
 import SingleJob from './components/freelancer/SingleJob';
 import ApplyToJob from './components/freelancer/ApplyToJob';
 import Proposals from './components/employer/Proposals';
+import FreelancerProfile from './components/freelancer/FreelancerProfile';
 
 function App() {
   const { userData } = useUser();
@@ -46,6 +47,7 @@ function App() {
         <Route element={<ProtectedRoutes accountType={["Freelancer"]}/>} >
           <Route exact path="/freelancer/dashboard" element={<FreelancerDashboard />} />
         </Route>
+          <Route exact path="/freelancer/profile" element={<FreelancerProfile />} />
 
         <Route exact path="/job/:id" element={<SingleJob />} />
         <Route exact path="/proposals/job/:id/apply" element={<ApplyToJob />} />
