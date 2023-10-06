@@ -23,14 +23,19 @@ app.use(function(req, res, next) {
 mongoose.set("strictQuery", false);
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  
 })
 .then(() => {
   console.log("MongoDB connected")
+  // start server
+  app.listen(port, () => {
+    console.log("Listening at port 5000")
+  })
 })
 .catch(err => console.log(err));
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '500mb', extended: true }));
 app.use(express.json());
 // app.use(cors({
 //   credentials: true,
@@ -51,15 +56,10 @@ app.get("/", (res, req) => {
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/employer', require('./routes/jobs'));
-// app.use('/api/proposals', require('./routes/employer'));
+app.use('/api/employer', require('./routes/employer'));
 app.use('/api/proposals', require('./routes/proposals'));
 app.use('/api/freelancer', require('./routes/freelancer'));
 
 
 // const routes = require('./routes/allRoutes');
 //   app.use('/api', routes)
-
-// start server
-app.listen(port, () => {
-  console.log("Listening at port 5000")
-})

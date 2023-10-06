@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Autocomplete, Box, Button, Container, FormControl, InputAdornment, InputLabel, OutlinedInput, TextField, Typography, styled } from '@mui/material'
+import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography, styled } from '@mui/material'
 import { CloudUpload } from '@mui/icons-material'
 import { useUser } from '../../context/authContext';
 import toast, { Toaster } from 'react-hot-toast';
@@ -17,40 +17,6 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
   });
 
-  
-  const skills = [
-    'PHP',
-    'CSS',
-    'JavaScript',
-    'HTML',
-    'Python',
-    'Java',
-    'Ruby',
-    'C++',
-    'C#',
-    'Swift',
-    'SQL',
-    'Node.js',
-    'React.js',
-    'Angular.js',
-    'Vue.js',
-    'Express.js',
-    'Django',
-    'Laravel',
-    'ASP.NET',
-    'WordPress',
-    'MongoDB',
-    'MySQL',
-    'PostgreSQL',
-    'Firebase',
-    'Git',
-    'Docker',
-    'Kubernetes',
-    'Jenkins',
-    'AWS',
-    'Azure',
-    'Google Cloud Platform'
-  ];
 
   function convertToBase64(file){
     return new Promise((resolve, reject) => {
@@ -65,21 +31,16 @@ const VisuallyHiddenInput = styled('input')({
     })
   }
 
-
-const FreelancerProfile = () => {
+const EmployerProfile = () => {
 
     const { userData } = useUser();
     const [profilePicture, setProfilePicture] = useState();
-
-    const [freelancerDetail, setFreelancerDetail] = useState({
+    const [employerDetail, setEmployerDetail] = useState({
         profilePicture: '',
-        profileTitle: '',
-        hourlyRate: '',
-        skills: [],
-        userId: '',
+        companyName: '',
+        companySize: '',
         description: ''
     });
-
     const [userDetail, setUserDetail] = useState({
         firstName: '',
         lastName: '',
@@ -90,60 +51,16 @@ const FreelancerProfile = () => {
         state: '',
         city: ''
     });
-
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
-    const [selectedSkills, setSelectedSkills] = useState(freelancerDetail?.skills || []);
-
-    const defaultSkills = [...new Set(freelancerDetail.skills || [])];
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFreelancer({ ...freelancerDetail, [name]: value });
-    };
-
-    const handleSkillChange = (_, newSkills) => {
-        setSelectedSkills(newSkills);
-        setFreelancer({ ...freelancerDetail, skills: newSkills.map(skill => skill) });
-    };
-
-    const handleSubmit = async () => {
-        try {
-            const data = {
-                ...freelancerDetail,
-                ...userDetail,
-                ...password,
-                ...profilePicture
-            }
-            // Send a POST request to the server endpoint with profileInfo data
-            const response = await axios.post('/api/freelancer/updateProfile', data);
-
-            if(response.status == "200"){
-                toast.success('Profile Updated Successfully.');
-                fetchProfileData();
-            }
-            else{
-                toast.error('Something went wrong.');
-            }
-
-
-            // Handle the response if needed
-            console.log('Profile updated successfully!', response.data);
-        } catch (error) {
-            // Handle errors here, e.g., show an error message to the user
-            console.error('Error updating profile:', error);
-        }
-    }
-
 
     useEffect(() => {
 
         const fetchProfileData = async () => {
             try {
                 const userId = userData?.userId;
-                const response = await axios.get(`/api/freelancer/getProfile/${userId}`);
-                setFreelancerDetail(response.data.freelancerDetail);
+                const response = await axios.get(`/api/employer/getProfile/${userId}`);
+                setEmployerDetail(response.data.employerDetail);
                 setUserDetail(response.data.userDetail);
             } catch (error) {
               console.error('Error fetching employer profile data:', error);
@@ -154,14 +71,15 @@ const FreelancerProfile = () => {
         // console.log(userData)
     }, [userData]);
 
+
     const handleUserDetail = (e) => {
         const {name, value} = e.target;
         setUserDetail({...userDetail, [name]: value});
     }
 
-    const handleFreelancerDetail = (e) => {
+    const handleEmployerDetail = (e) => {
         const {name, value} = e.target;
-        setFreelancerDetail({...freelancerDetail, [name]: value});
+        setEmployerDetail({...employerDetail, [name]: value});
     }
 
     const handlePasswordChange = (e) => {
@@ -171,6 +89,29 @@ const FreelancerProfile = () => {
     const handleConfirmPasswordChange = (e) => {
         setConfirmPassword(e.target.value);
     };
+
+    const handleSubmit = async () => {
+        try {
+            // Send a POST request to the server endpoint with profileInfo data
+            const response = await axios.post('/api/employer/updateProfile', {
+                ...employerDetail,
+                ...userDetail,
+                ...password,
+                ...profilePicture
+            });
+
+            if(response.status == "200"){
+                toast.success('Profile Updated Successfully.');
+            }
+            else{
+                toast.error('Something went wrong.');
+            }
+
+        } catch (error) {
+            // Handle errors here, e.g., show an error message to the user
+            console.error('Error updating profile:', error);
+        }
+    }
 
     const fileTypes = '.jpg, .jpeg, .png';
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB limit
@@ -183,9 +124,9 @@ const FreelancerProfile = () => {
           console.error('File size exceeds the limit.');
           return;
         }
+      
         const base64 = await convertToBase64(file);
-        console.log(base64)
-        setProfilePicture({profilePicture: base64});
+        setProfilePicture(base64);
       };
 
 
@@ -199,13 +140,13 @@ const FreelancerProfile = () => {
                     <Typography variant='body1'>Profile Picture</Typography>
                     <Button component="label" sx={{ mt: 2 }} size='large' variant="contained" startIcon={<CloudUpload />}>
                         Upload file
-                        <VisuallyHiddenInput type="file" name="profilePicture" id="profilePicture" accept={fileTypes} onChange={(e) => handleFileUpload(e)} />
+                        <VisuallyHiddenInput name="profilePicture" id="profilePicture" type="file" accept={fileTypes} onChange={(e) => handleFileUpload(e)} />
                     </Button>
                 </Box>
                 <Box sx={{ width: '50%', mt: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'end', alignContent: 'center' }}>
                 <Box
                 component="img"
-                src={freelancerDetail?.profilePicture || "https://pjiorgdev.wpenginepowered.com/wp-content/uploads/2023/09/user.png"}
+                src={employerDetail?.profilePicture || "https://pjiorgdev.wpenginepowered.com/wp-content/uploads/2023/09/user.png"}
                 alt=""
                 sx={{
                     borderRadius: '50%',
@@ -222,19 +163,31 @@ const FreelancerProfile = () => {
                     <TextField id="lastName" name="lastName" type="text" label="Last Name" variant="outlined" fullWidth value={userDetail?.lastName} onChange={handleUserDetail} />
                 </Box>
                 <Box sx={{ width: '32%', mt: 2 }}>
-                    <TextField id="profileTitle" name="profileTitle" type="text" label="Profile Title" variant="outlined" fullWidth value={freelancerDetail?.profileTitle} onChange={handleFreelancerDetail} />
-                </Box>
-                <Box sx={{ width: '32%', mt: 2 }}>
                     <TextField id="email" name="email" type="email" label="Email" variant="outlined" fullWidth value={userDetail?.email} onChange={handleUserDetail} />
                 </Box>
                 <Box sx={{ width: '32%', mt: 2 }}>
                     <TextField id="phone" name="phone" type="tel" label="Phone" variant="outlined" fullWidth value={userDetail?.phone} onChange={handleUserDetail} />
                 </Box>
                 <Box sx={{ width: '32%', mt: 2 }}>
-                    {/* <TextField id="hourlyRate" name="hourlyRate" type="number" label="Hourly Rate" variant="outlined" fullWidth startAdornment={<InputAdornment position="start">$</InputAdornment>} value={freelancerDetail.hourlyRate} onChange={handleInputChange} /> */}
-                    {/* <InputLabel htmlFor="outlined-adornment-amount">Hourly Rate</InputLabel> */}
-                    <FormControl fullWidth>
-                        <OutlinedInput id="hourlyRate" name="hourlyRate" type="number" sx={{ color: '#000' }} label="Hourly Rate" variant="outlined" fullWidth startAdornment={<InputAdornment position="start">$</InputAdornment>} value={freelancerDetail?.hourlyRate} onChange={handleFreelancerDetail} />
+                    <TextField id="companyName" name="companyName" type="text" label="Company Name" variant="outlined" fullWidth value={employerDetail?.companyName} onChange={handleEmployerDetail} />
+                </Box>
+                <Box sx={{ width: '32%', mt: 2 }}>
+                    <FormControl sx={{ minWidth: 345 }}>
+                        <InputLabel id="demo-simple-select-helper-label">Company Size</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-helper-label"
+                            id="demo-simple-select-helper"
+                            variant="outlined"
+                            name="companySize"
+                            value={employerDetail?.companySize}
+                            label="Company Size"
+                            onChange={handleEmployerDetail}
+                            displayEmpty={true}
+                        >
+                            <MenuItem value={'small'}>Small</MenuItem>
+                            <MenuItem value={'medium'}>Medium</MenuItem>
+                            <MenuItem value={'large'}>Large</MenuItem>
+                        </Select>
                     </FormControl>
                 </Box>
                 <Box sx={{ width: '32%', mt: 2 }}>
@@ -247,30 +200,13 @@ const FreelancerProfile = () => {
                     <TextField id="city" name="city" type="text" label="City" variant="outlined" fullWidth value={userDetail?.city} onChange={handleUserDetail} />
                 </Box>
                 <Box sx={{ width: '49%', mt: 2 }}>
-                    <TextField id="password" name="password" type="password" label="Password" variant="outlined" fullWidth value={userDetail?.password} onChange={handlePasswordChange} />
+                    <TextField id="password" name="password" type="password" label="Password" variant="outlined" fullWidth value={password} onChange={handlePasswordChange} />
                 </Box>
                 <Box sx={{ width: '49%', mt: 2 }}>
-                    <TextField id="confirmPassword" name="confirmPassword" type="password" label="Confirm Password" variant="outlined" fullWidth value={userDetail?.password} onChange={handleConfirmPasswordChange} />
+                    <TextField id="confirmPassword" name="confirmPassword" type="password" label="Confirm Password" variant="outlined" fullWidth value={confirmPassword} onChange={handleConfirmPasswordChange} />
                 </Box>
                 <Box sx={{ width: '100%', mt: 2 }}>
-                <Autocomplete
-                        multiple
-                        limitTags={5}
-                        id="skills"
-                        name="skills"
-                        fullWidth
-                        value={selectedSkills}
-                        defaultValue={defaultSkills} // Set default skills from the database
-                        options={skills}
-                        getOptionLabel={(option) => option || 'Default Title'}
-                        onChange={handleSkillChange}
-                        renderInput={(params) => (
-                            <TextField {...params} label="Skills" placeholder="Skills" />
-                        )}
-                    />
-                </Box>
-                <Box sx={{ width: '100%', mt: 2 }}>
-                    <TextField id="description" name="description" label="Description" multiline rows={10} fullWidth value={freelancerDetail?.description} onChange={handleFreelancerDetail}/>
+                    <TextField id="description" name="description" label="Description" multiline rows={10} fullWidth value={employerDetail?.description} onChange={handleEmployerDetail}/>
                 </Box>
                 <Box sx={{ width: '100%', mt: 2 }}>
                     <Button variant="contained" size="large" color="primary" type="submit" fullWidth onClick={handleSubmit}>Update Profile</Button>
@@ -281,4 +217,4 @@ const FreelancerProfile = () => {
   )
 }
 
-export default FreelancerProfile
+export default EmployerProfile

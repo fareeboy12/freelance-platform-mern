@@ -17,17 +17,9 @@ const freelancerDetailSchema = new mongoose.Schema({
     type: Array,
     required: true
   },
-  country: {
+  badges: {
     type: String,
-    required: true
-  },
-  state: {
-    type: String,
-    required: true
-  },
-  city: {
-    type: String,
-    required: true
+    required: false
   },
   description: {
     type: String,

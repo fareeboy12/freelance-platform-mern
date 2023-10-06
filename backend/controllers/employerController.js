@@ -1,39 +1,35 @@
 const User = require('../models/User');
-const FreelancerDetail = require('../models/FreelancerDetail');
+const EmployerDetail = require('../models/EmployerDetail');
 
 const updateProfile = async (req, res) => {
-    const { firstName, lastName, profileTitle, profilePicture, email, phone, hourlyRate, country, state, city, password, description, skills } = req.body;
+    const { firstName, lastName, companyName, companySize, email, phone, country, state, city, password, description, profilePicture } = req.body;
     const userId = req.body.userId;
 
-    console.log(req.body.profilePicture);
-
     try {
-        // Check if a FreelancerDetail document exists for the given userId
-        let freelancerDetail = await FreelancerDetail.findOne({ userId });
+        // Check if a employerDetail document exists for the given userId
+        let employerDetail = await EmployerDetail.findOne({ userId });
 
-        if (!freelancerDetail) {
+        if (!employerDetail) {
             // If no document found, create a new one
-            freelancerDetail = new FreelancerDetail({
+            employerDetail = new EmployerDetail({
                 userId,
-                profileTitle,
-                hourlyRate,
-                skills,
+                companyName,
+                companySize,
                 profilePicture,
                 description,
             });
 
             // Save the new document to the collection
-            await freelancerDetail.save();
+            await employerDetail.save();
         } else {
             // If document found, update it
-            freelancerDetail.profileTitle = profileTitle;
-            freelancerDetail.hourlyRate = hourlyRate;
-            freelancerDetail.profilePicture = profilePicture;
-            freelancerDetail.description = description;
-            freelancerDetail.skills = skills;
+            employerDetail.companyName = companyName;
+            employerDetail.companySize = companySize;
+            employerDetail.profilePicture = profilePicture;
+            employerDetail.description = description;
 
             // Save the updated document
-            await freelancerDetail.save();
+            await employerDetail.save();
         }
 
         // Update User schema only if password is provided
@@ -46,7 +42,7 @@ const updateProfile = async (req, res) => {
                 password,
                 country,
                 state,
-                city,
+                city
             });
         } else {
             await User.findByIdAndUpdate(userId, {
@@ -56,7 +52,7 @@ const updateProfile = async (req, res) => {
                 phone,
                 country,
                 state,
-                city,
+                city
             });
         }
 
@@ -74,16 +70,16 @@ const getProfile = async (req, res) => {
 
     try {
         // Find employerDetail document by userId
-        const freelancerDetail = await FreelancerDetail.findOne({ userId });
+        const employerDetail = await EmployerDetail.findOne({ userId });
         const userDetail = await User.findOne({ _id: userId }).select('-password');
 
-        if (!freelancerDetail || !userDetail) {
+        if (!employerDetail || !userDetail) {
             // If no employerDetail or userDetail found, return a 404 status and message
             return res.status(404).json({ message: 'Profile not found' });
         }
 
         // If both employerDetail and userDetail found, send them in the response
-        res.status(200).json({ freelancerDetail, userDetail });
+        res.status(200).json({ employerDetail, userDetail });
     } catch (error) {
         // Handle errors
         console.error('Error fetching profile:', error);

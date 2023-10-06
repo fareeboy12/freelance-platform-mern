@@ -15,6 +15,7 @@ import SingleJob from './components/freelancer/SingleJob';
 import ApplyToJob from './components/freelancer/ApplyToJob';
 import Proposals from './components/employer/Proposals';
 import FreelancerProfile from './components/freelancer/FreelancerProfile';
+import EmployerProfile from './components/employer/EmployerProfile';
 
 function App() {
   const { userData } = useUser();
@@ -38,20 +39,20 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route element={<ProtectedRoutes accountType={["Employer"]}/>} >
             <Route exact path="/employer/dashboard" element={<EmployerDashboard />}/>
-        </Route>
-
-        <Route element={<ProtectedRoutes accountType={["Employer"]}/>} >
-          <Route exact path="/post-a-job" element={<PostAJob />} />
+            <Route exact path="/post-a-job" element={<PostAJob />} />
+            <Route exact path="/applicants/job/:id" element={<Proposals />} />
+            <Route exact path="/employer/profile" element={<EmployerProfile />} />
         </Route>
 
         <Route element={<ProtectedRoutes accountType={["Freelancer"]}/>} >
           <Route exact path="/freelancer/dashboard" element={<FreelancerDashboard />} />
-        </Route>
           <Route exact path="/freelancer/profile" element={<FreelancerProfile />} />
+          <Route exact path="/proposals/job/:id/apply" element={<ApplyToJob />} />
+        </Route>
 
         <Route exact path="/job/:id" element={<SingleJob />} />
-        <Route exact path="/proposals/job/:id/apply" element={<ApplyToJob />} />
-        <Route exact path="/applicants/job/:id" element={<Proposals />} />
+        
+        
       </Routes>
     </>
   )

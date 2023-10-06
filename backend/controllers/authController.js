@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const FreelancerDetail = require('../models/FreelancerDetail');
+const EmployerDetail = require('../models/EmployerDetail');
 
 const registerUser = async (req, res) => {
   // Check for validation errors
@@ -107,6 +108,10 @@ const loginUser = async (req, res) => {
               lastName: user.lastName,
               email: user.email,
               accountType: user.accountType,
+              country: user.country,
+              state: user.state,
+              city: user.city,
+              phone: user.phone
             },
           };
     
@@ -114,10 +119,13 @@ const loginUser = async (req, res) => {
           if (user.accountType === 'Freelancer') {
             // Fetch Freelancer details for the logged-in user
             const freelancerDetail = await FreelancerDetail.findOne({ userId: user._id });
-            if (freelancerDetail) {
-              // Include Freelancer details in the response
-              responseData.freelancerDetail = freelancerDetail;
-            }
+            responseData.freelancerDetail = freelancerDetail;
+          }
+
+          else if (user.accountType === 'Employer') {
+            // Fetch Freelancer details for the logged-in user
+            const employerDetail = await EmployerDetail.findOne({ userId: user._id });
+            responseData.employerDetail = employerDetail;
           }
     
           res.json(responseData);

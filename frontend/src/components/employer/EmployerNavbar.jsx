@@ -4,7 +4,20 @@ import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Tooltip,
 import { Adb, Person, Search, HelpOutline, Notifications, Favorite, ArrowDropDown } from '@mui/icons-material';
 import { useUser } from '../../context/authContext';
 
-const settings = ['Dashboard', 'Profile', 'Settings'];
+const settings = [
+  {
+    'title': 'Dashboard',
+    'url': '/employer/dashboard'
+  },
+  {
+    'title': 'Profile',
+    'url': '/employer/profile'
+  },
+  {
+    'title': 'Settings',
+    'url': '/employer/settings'
+  }
+];
 
 const jobsMenuItems = [
   'Post a Job',
@@ -377,10 +390,10 @@ function EmployerNavbar() {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Link to={`/${setting.toLowerCase()}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                  {setting}
+            {settings.map((setting, index) => (
+              <MenuItem key={index} onClick={handleCloseUserMenu}>
+                <Link to={setting?.url} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  {setting?.title}
                 </Link>
               </MenuItem>
             ))}
