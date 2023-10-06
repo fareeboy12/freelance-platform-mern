@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Autocomplete, Box, Button, Container, FormControl, InputAdornment, InputLabel, OutlinedInput, TextField, Typography, styled } from '@mui/material'
+import { Autocomplete, Box, Button, Container, FormControl, InputAdornment, InputLabel, OutlinedInput, Skeleton, TextField, Typography, styled } from '@mui/material'
 import { CloudUpload } from '@mui/icons-material'
 import { useUser } from '../../context/authContext';
 import toast, { Toaster } from 'react-hot-toast';
@@ -69,6 +69,8 @@ const VisuallyHiddenInput = styled('input')({
 const FreelancerProfile = () => {
 
     const { userData } = useUser();
+    const [loading, setLoading] = useState(true);
+    const [imagePreview, setImagePreview] = useState('');
     const [profilePicture, setProfilePicture] = useState();
 
     const [freelancerDetail, setFreelancerDetail] = useState({
@@ -109,6 +111,7 @@ const FreelancerProfile = () => {
     };
 
     const handleSubmit = async () => {
+        setLoading(true);
         try {
             const data = {
                 ...freelancerDetail,
@@ -137,18 +140,20 @@ const FreelancerProfile = () => {
     }
 
 
+    const fetchProfileData = async () => {
+        try {
+            const userId = userData?.userId;
+            const response = await axios.get(`/api/freelancer/getProfile/${userId}`);
+            setFreelancerDetail(response.data.freelancerDetail);
+            setUserDetail(response.data.userDetail);
+            setLoading(false);
+        } catch (error) {
+          console.error('Error fetching employer profile data:', error);
+        }
+    };
+
     useEffect(() => {
 
-        const fetchProfileData = async () => {
-            try {
-                const userId = userData?.userId;
-                const response = await axios.get(`/api/freelancer/getProfile/${userId}`);
-                setFreelancerDetail(response.data.freelancerDetail);
-                setUserDetail(response.data.userDetail);
-            } catch (error) {
-              console.error('Error fetching employer profile data:', error);
-            }
-        };
         fetchProfileData();
 
         // console.log(userData)
@@ -186,8 +191,73 @@ const FreelancerProfile = () => {
         const base64 = await convertToBase64(file);
         console.log(base64)
         setProfilePicture({profilePicture: base64});
+        setImagePreview(base64);
       };
 
+      if (loading) {
+        // Render skeleton loading UI while data is being fetched
+        return (
+            <Container sx={{ py: 10 }}>
+                {/* <Skeleton variant="rect" width={200} animation="wave" height={200} sx={{ borderRadius: '50%', margin: '0 auto 2rem auto' }} />
+                <Skeleton variant="text" width={200} animation="wave" height={40} sx={{ margin: '0 auto 1rem auto' }} />
+                <Skeleton variant="text" width={200} animation="wave" height={40} sx={{ margin: '0 auto 1rem auto' }} />
+                <Skeleton variant="text" width={200} animation="wave" height={40} sx={{ margin: '0 auto 1rem auto' }} /> */}
+                {/* Render other skeleton components as needed */}
+
+                <Box>
+                    <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                    <Box sx={{ border: '1px solid #e4ebe4', borderRadius: '15px', mt: 5, p: 3, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                        <Box sx={{ width: '30%', mt: 2, display: 'flex', flexWrap: 'wrap', flexDirection: 'column', justifyContent: 'center' }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                            <Skeleton variant="rect" width={50} animation="wave" height={50} sx={{ borderRadius: '50%', margin: '0 auto 2rem auto' }} />
+                        </Box>
+                        <Box sx={{ width: '50%', mt: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'end', alignContent: 'center' }}>
+                            <Skeleton variant="rect" width={200} animation="wave" height={200} sx={{ borderRadius: '50%', margin: '0 auto 2rem auto' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="rectangular" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '49%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '49%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '100%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '100%', mt: 2 }}>
+                            <Skeleton variant="rounded" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                    </Box>
+                </Box>
+            </Container>
+        );
+    }
 
   return (
     <Container sx={{ py: 10 }}>
@@ -203,17 +273,31 @@ const FreelancerProfile = () => {
                     </Button>
                 </Box>
                 <Box sx={{ width: '50%', mt: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'end', alignContent: 'center' }}>
-                <Box
-                component="img"
-                src={freelancerDetail?.profilePicture || "https://pjiorgdev.wpenginepowered.com/wp-content/uploads/2023/09/user.png"}
-                alt=""
-                sx={{
-                    borderRadius: '50%',
-                    objectFit: 'cover',
-                    height: '200px',
-                    width: '200px',
-                }}
-                />
+                    {imagePreview ? (
+                        <Box
+                            component="img"
+                            src={imagePreview}
+                            alt="Image Preview"
+                            sx={{
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                                height: '200px',
+                                width: '200px',
+                            }}
+                        />
+                    ) : (
+                        <Box
+                            component="img"
+                            src={freelancerDetail?.profilePicture || "https://pjiorgdev.wpenginepowered.com/wp-content/uploads/2023/09/user.png"}
+                            alt=""
+                            sx={{
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                                height: '200px',
+                                width: '200px',
+                            }}
+                        />
+                    )}
                 </Box>
                 <Box sx={{ width: '32%', mt: 2 }}>
                     <TextField id="firstName" name="firstName" type="text" label="First Name" variant="outlined" fullWidth value={userDetail?.firstName} onChange={handleUserDetail} />

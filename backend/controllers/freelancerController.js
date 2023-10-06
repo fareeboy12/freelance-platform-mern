@@ -5,8 +5,6 @@ const updateProfile = async (req, res) => {
     const { firstName, lastName, profileTitle, profilePicture, email, phone, hourlyRate, country, state, city, password, description, skills } = req.body;
     const userId = req.body.userId;
 
-    console.log(req.body.profilePicture);
-
     try {
         // Check if a FreelancerDetail document exists for the given userId
         let freelancerDetail = await FreelancerDetail.findOne({ userId });

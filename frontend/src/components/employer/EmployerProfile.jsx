@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography, styled } from '@mui/material'
+import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, Skeleton, TextField, Typography, styled } from '@mui/material'
 import { CloudUpload } from '@mui/icons-material'
 import { useUser } from '../../context/authContext';
 import toast, { Toaster } from 'react-hot-toast';
@@ -34,6 +34,8 @@ const VisuallyHiddenInput = styled('input')({
 const EmployerProfile = () => {
 
     const { userData } = useUser();
+    const [loading, setLoading] = useState(true);
+    const [imagePreview, setImagePreview] = useState('');
     const [profilePicture, setProfilePicture] = useState();
     const [employerDetail, setEmployerDetail] = useState({
         profilePicture: '',
@@ -54,18 +56,20 @@ const EmployerProfile = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    useEffect(() => {
+    const fetchProfileData = async () => {
+        try {
+            console.log("FetchData func is called.")
+            const userId = userData?.userId;
+            const response = await axios.get(`/api/employer/getProfile/${userId}`);
+            setEmployerDetail(response.data.employerDetail);
+            setUserDetail(response.data.userDetail);
+            setLoading(false);
+        } catch (error) {
+          console.error('Error fetching employer profile data:', error);
+        }
+    };
 
-        const fetchProfileData = async () => {
-            try {
-                const userId = userData?.userId;
-                const response = await axios.get(`/api/employer/getProfile/${userId}`);
-                setEmployerDetail(response.data.employerDetail);
-                setUserDetail(response.data.userDetail);
-            } catch (error) {
-              console.error('Error fetching employer profile data:', error);
-            }
-        };
+    useEffect(() => {
         fetchProfileData();
 
         // console.log(userData)
@@ -102,14 +106,17 @@ const EmployerProfile = () => {
 
             if(response.status == "200"){
                 toast.success('Profile Updated Successfully.');
+                fetchProfileData();
             }
             else{
                 toast.error('Something went wrong.');
+                setLoading(false);
             }
 
         } catch (error) {
             // Handle errors here, e.g., show an error message to the user
             console.error('Error updating profile:', error);
+            setLoading(false);
         }
     }
 
@@ -127,9 +134,75 @@ const EmployerProfile = () => {
       
         const base64 = await convertToBase64(file);
         setProfilePicture(base64);
+        setImagePreview(base64);
       };
 
 
+    if (loading) {
+        // Render skeleton loading UI while data is being fetched
+        return (
+            <Container sx={{ py: 10 }}>
+                {/* <Skeleton variant="rect" width={200} animation="wave" height={200} sx={{ borderRadius: '50%', margin: '0 auto 2rem auto' }} />
+                <Skeleton variant="text" width={200} animation="wave" height={40} sx={{ margin: '0 auto 1rem auto' }} />
+                <Skeleton variant="text" width={200} animation="wave" height={40} sx={{ margin: '0 auto 1rem auto' }} />
+                <Skeleton variant="text" width={200} animation="wave" height={40} sx={{ margin: '0 auto 1rem auto' }} /> */}
+                {/* Render other skeleton components as needed */}
+
+                <Box>
+                    <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                    <Box sx={{ border: '1px solid #e4ebe4', borderRadius: '15px', mt: 5, p: 3, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                        <Box sx={{ width: '30%', mt: 2, display: 'flex', flexWrap: 'wrap', flexDirection: 'column', justifyContent: 'center' }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                            <Skeleton variant="rect" width={50} animation="wave" height={50} sx={{ borderRadius: '50%', margin: '0 auto 2rem auto' }} />
+                        </Box>
+                        <Box sx={{ width: '50%', mt: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'end', alignContent: 'center' }}>
+                            <Skeleton variant="rect" width={200} animation="wave" height={200} sx={{ borderRadius: '50%', margin: '0 auto 2rem auto' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="rectangular" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '32%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '49%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '49%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '100%', mt: 2 }}>
+                            <Skeleton variant="text" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                        <Box sx={{ width: '100%', mt: 2 }}>
+                            <Skeleton variant="rounded" animation="wave" height={40} sx={{ width: '100%' }} />
+                        </Box>
+                    </Box>
+                </Box>
+            </Container>
+        );
+    }
+  
   return (
     <Container sx={{ py: 10 }}>
         <Toaster position="top-right" reverseOrder={false} />
@@ -144,17 +217,31 @@ const EmployerProfile = () => {
                     </Button>
                 </Box>
                 <Box sx={{ width: '50%', mt: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'end', alignContent: 'center' }}>
-                <Box
-                component="img"
-                src={employerDetail?.profilePicture || "https://pjiorgdev.wpenginepowered.com/wp-content/uploads/2023/09/user.png"}
-                alt=""
-                sx={{
-                    borderRadius: '50%',
-                    objectFit: 'cover',
-                    height: '200px',
-                    width: '200px',
-                }}
-                />
+                    {imagePreview ? (
+                        <Box
+                            component="img"
+                            src={imagePreview}
+                            alt="Image Preview"
+                            sx={{
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                                height: '200px',
+                                width: '200px',
+                            }}
+                        />
+                    ) : (
+                        <Box
+                            component="img"
+                            src={employerDetail?.profilePicture || "https://pjiorgdev.wpenginepowered.com/wp-content/uploads/2023/09/user.png"}
+                            alt=""
+                            sx={{
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                                height: '200px',
+                                width: '200px',
+                            }}
+                        />
+                    )}
                 </Box>
                 <Box sx={{ width: '32%', mt: 2 }}>
                     <TextField id="firstName" name="firstName" type="text" label="First Name" variant="outlined" fullWidth value={userDetail?.firstName} onChange={handleUserDetail} />
